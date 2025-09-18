@@ -7,6 +7,7 @@ pub mod voting {
     use super::*;
 
     pub fn initialize_poll(ctx: Context<InitializePoll>,
+                           poll_id: u64,
                            name: String,
                            description: String,
                            start_time: u64,
@@ -20,6 +21,13 @@ pub mod voting {
         Ok(())
 
 
+    }
+
+    pub fn initialize_candidate(ctx: Context<InitializeCandidate>,
+                                poll_id: u64
+                                candidate: String,
+                            ) -> Result<()>{
+        Ok(())
     }
 }
 
@@ -41,6 +49,26 @@ pub struct InitializePoll<'info>{
     pub system_program: Program<'info, System>,
 }
 
+#[derive(Accounts)]
+#[instruction(poll_id: u64, candidate: String)]
+pub struct InitializeCandidate<'info>{
+
+    #[account(mut)]
+    pub user: Signer<'info>,
+
+    #[account(
+        init,
+        payer = user,
+        space = 8 + CandidateAccount::INIT_SPACE,
+        seeds = [poll_id.to_le_bytes().as_ref,candidate.as_ref()],
+        bump
+    )]
+    pub candidate_account: Account<'info, CandidateAccount>,
+
+    pub system_program: Program<'info, System>,
+}
+
+
 #[account]
 #[derive(InitSpace)]
 pub struct PollAccount{
@@ -54,4 +82,13 @@ pub struct PollAccount{
     pub poll_start: u64,
 
     pub poll_end: u64,
+}
+
+#[account]
+#[derive(InitSpace)]
+
+pub struct CandidateAccount{
+    #[max_len(50)]
+    pub candidate_name: String,
+    pub candidate_vote: u64,
 }
