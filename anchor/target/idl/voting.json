@@ -283,7 +283,7 @@
             "type": "u64"
           },
           {
-            "name": "vote_count",
+            "name": "candidate_count",
             "type": "u64"
           }
         ]

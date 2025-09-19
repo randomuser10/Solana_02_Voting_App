@@ -26,7 +26,7 @@ pub mod voting {
                                 candidate: String,
                             ) -> Result<()>{
         ctx.accounts.candidate_account.candidate_name = candidate;
-        ctx.accounts.poll_account.vote_count += 1;
+        ctx.accounts.poll_account.candidate_count += 1;
         Ok(())
     }
 
@@ -111,7 +111,7 @@ pub struct PollAccount{
 
     pub poll_end: u64,
 
-    pub  vote_count: u64,
+    pub  candidate_count: u64,
 }
 
 //derive account for vote

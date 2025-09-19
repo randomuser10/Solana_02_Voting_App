@@ -289,7 +289,7 @@ export type Voting = {
             "type": "u64"
           },
           {
-            "name": "voteCount",
+            "name": "candidateCount",
             "type": "u64"
           }
         ]
