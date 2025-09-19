@@ -32,6 +32,9 @@ export type Voting = {
           "signer": true
         },
         {
+          "name": "pollAccount"
+        },
+        {
           "name": "candidateAccount",
           "writable": true,
           "pda": {
@@ -129,6 +132,82 @@ export type Voting = {
           "type": "u64"
         }
       ]
+    },
+    {
+      "name": "vote",
+      "discriminator": [
+        227,
+        110,
+        155,
+        23,
+        136,
+        126,
+        172,
+        25
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "pollAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "pollId"
+              }
+            ]
+          }
+        },
+        {
+          "name": "candidateAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "pollId"
+              },
+              {
+                "kind": "arg",
+                "path": "candidate"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "pollId",
+          "type": "u64"
+        },
+        {
+          "name": "candidateName",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -163,7 +242,7 @@ export type Voting = {
     {
       "code": 6000,
       "name": "votingNotStarted",
-      "msg": "Voting hasn't started yet."
+      "msg": "Voting has'nt started yet."
     },
     {
       "code": 6001,
@@ -207,6 +286,10 @@ export type Voting = {
           },
           {
             "name": "pollEnd",
+            "type": "u64"
+          },
+          {
+            "name": "voteCount",
             "type": "u64"
           }
         ]

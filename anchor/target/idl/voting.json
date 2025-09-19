@@ -26,6 +26,9 @@
           "signer": true
         },
         {
+          "name": "poll_account"
+        },
+        {
           "name": "candidate_account",
           "writable": true,
           "pda": {
@@ -123,6 +126,82 @@
           "type": "u64"
         }
       ]
+    },
+    {
+      "name": "vote",
+      "discriminator": [
+        227,
+        110,
+        155,
+        23,
+        136,
+        126,
+        172,
+        25
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "poll_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "poll_id"
+              }
+            ]
+          }
+        },
+        {
+          "name": "candidate_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  111,
+                  108,
+                  108
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "poll_id"
+              },
+              {
+                "kind": "arg",
+                "path": "candidate"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "poll_id",
+          "type": "u64"
+        },
+        {
+          "name": "candidate_name",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -157,7 +236,7 @@
     {
       "code": 6000,
       "name": "VotingNotStarted",
-      "msg": "Voting hasn't started yet."
+      "msg": "Voting has'nt started yet."
     },
     {
       "code": 6001,
@@ -201,6 +280,10 @@
           },
           {
             "name": "poll_end",
+            "type": "u64"
+          },
+          {
+            "name": "vote_count",
             "type": "u64"
           }
         ]
