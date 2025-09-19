@@ -14,6 +14,56 @@ export type Voting = {
   },
   "instructions": [
     {
+      "name": "initializeCandidate",
+      "discriminator": [
+        210,
+        107,
+        118,
+        204,
+        255,
+        97,
+        112,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "candidateAccount",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "arg",
+                "path": "pollId"
+              },
+              {
+                "kind": "arg",
+                "path": "candidate"
+              }
+            ]
+          }
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "pollId",
+          "type": "u64"
+        },
+        {
+          "name": "candidate",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "initializePoll",
       "discriminator": [
         193,
@@ -59,6 +109,10 @@ export type Voting = {
       ],
       "args": [
         {
+          "name": "pollId",
+          "type": "u64"
+        },
+        {
           "name": "name",
           "type": "string"
         },
@@ -79,6 +133,19 @@ export type Voting = {
   ],
   "accounts": [
     {
+      "name": "candidateAccount",
+      "discriminator": [
+        69,
+        203,
+        73,
+        43,
+        203,
+        170,
+        96,
+        121
+      ]
+    },
+    {
       "name": "pollAccount",
       "discriminator": [
         109,
@@ -92,7 +159,35 @@ export type Voting = {
       ]
     }
   ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "votingNotStarted",
+      "msg": "Voting hasn't started yet."
+    },
+    {
+      "code": 6001,
+      "name": "votingEnded",
+      "msg": "Voting has ended."
+    }
+  ],
   "types": [
+    {
+      "name": "candidateAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "candidateName",
+            "type": "string"
+          },
+          {
+            "name": "candidateVote",
+            "type": "u64"
+          }
+        ]
+      }
+    },
     {
       "name": "pollAccount",
       "type": {

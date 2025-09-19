@@ -8,6 +8,56 @@
   },
   "instructions": [
     {
+      "name": "initialize_candidate",
+      "discriminator": [
+        210,
+        107,
+        118,
+        204,
+        255,
+        97,
+        112,
+        26
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "candidate_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "arg",
+                "path": "poll_id"
+              },
+              {
+                "kind": "arg",
+                "path": "candidate"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "poll_id",
+          "type": "u64"
+        },
+        {
+          "name": "candidate",
+          "type": "string"
+        }
+      ]
+    },
+    {
       "name": "initialize_poll",
       "discriminator": [
         193,
@@ -53,6 +103,10 @@
       ],
       "args": [
         {
+          "name": "poll_id",
+          "type": "u64"
+        },
+        {
           "name": "name",
           "type": "string"
         },
@@ -73,6 +127,19 @@
   ],
   "accounts": [
     {
+      "name": "CandidateAccount",
+      "discriminator": [
+        69,
+        203,
+        73,
+        43,
+        203,
+        170,
+        96,
+        121
+      ]
+    },
+    {
       "name": "PollAccount",
       "discriminator": [
         109,
@@ -86,7 +153,35 @@
       ]
     }
   ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "VotingNotStarted",
+      "msg": "Voting hasn't started yet."
+    },
+    {
+      "code": 6001,
+      "name": "VotingEnded",
+      "msg": "Voting has ended."
+    }
+  ],
   "types": [
+    {
+      "name": "CandidateAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "candidate_name",
+            "type": "string"
+          },
+          {
+            "name": "candidate_vote",
+            "type": "u64"
+          }
+        ]
+      }
+    },
     {
       "name": "PollAccount",
       "type": {

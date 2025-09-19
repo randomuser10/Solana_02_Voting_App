@@ -24,10 +24,13 @@ pub mod voting {
     }
 
     pub fn initialize_candidate(ctx: Context<InitializeCandidate>,
-                                poll_id: u64
+                                poll_id: u64,
                                 candidate: String,
                             ) -> Result<()>{
-        Ok(())
+
+            ctx.accounts.candidate_account.candidate_name = candidate;
+            ctx.accounts.candidate_account.candidate_vote += 1;
+            Ok(())
     }
 }
 
@@ -60,7 +63,7 @@ pub struct InitializeCandidate<'info>{
         init,
         payer = user,
         space = 8 + CandidateAccount::INIT_SPACE,
-        seeds = [poll_id.to_le_bytes().as_ref,candidate.as_ref()],
+        seeds = [poll_id.to_le_bytes().as_ref(),candidate.as_ref()],
         bump
     )]
     pub candidate_account: Account<'info, CandidateAccount>,
@@ -91,4 +94,13 @@ pub struct CandidateAccount{
     #[max_len(50)]
     pub candidate_name: String,
     pub candidate_vote: u64,
+}
+
+#[error_code]
+pub enum ErrorCode{
+    #[msg("Voting hasn't started yet.")]
+    VotingNotStarted,
+
+    #[msg("Voting has ended.")]
+    VotingEnded,
 }
